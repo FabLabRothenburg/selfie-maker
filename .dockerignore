@@ -1,0 +1,6 @@
+.env
+.git
+.*.swp
+.dockerignore
+.gitignore
+Dockerfile
