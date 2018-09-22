@@ -39,7 +39,7 @@ foreach ($_FILES as $file) {
     foreach ($faces as $face) {
         $sizeMax = max($face->faceRectangle->width, $face->faceRectangle->height);
         $cmd .= \sprintf(
-            ' \( -background none smiley.svg -resize %dx%d -repage +%d+%d \)',
+            ' \( -background none smiley.png -resize %dx%d -repage +%d+%d \)',
             $sizeMax, $sizeMax,
             $face->faceRectangle->left,
             $face->faceRectangle->top
