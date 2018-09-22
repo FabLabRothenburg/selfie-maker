@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <title>Fablab Rothenburg Selfie Maker</title>
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u"
+    crossorigin="anonymous">
+  <style type="text/css">
+    input[type=file] {
+      position: absolute;
+      filter: alpha(opacity=0);
+      opacity: 0;
+    }
+
+    img {
+      max-width: 100%;
+    }
+  </style>
+</head>
+
+<body>
+  <div class="container">
+
+    <form enctype="multipart/form-data" method="post">
+      <div id="main" class="jumbotron">
+        <img src="fablab_ro42.jpg" alt="Logo Fablab Rothenburg" />
+        <h1>Selfie Maker</h1>
+        <p>
+          Verwende den Selfie Maker um ein Bild von deiner frisch gebastelten Erungenschaft mit den anderen Fablaberern zu teilen.
+        </p>
+        <label for="fileToUpload" class="btn btn-primary btn-lg">Los geht's, ich bin dabei!</label>
+        <input type="file" name="fileToUpload" id="fileToUpload" onchange="uploadFile();" accept="image/*" capture="user" />
+
+        <div id="progress"></div>
+      </div>
+
+    </form>
+
+    <div id="preview" class="jumbotron hide">
+      <h1>So veröffentlichen?</h1>
+      <div>
+        <img id="preview_image" alt="Preview Image" />
+      </div>
+      <button class="btn btn-primary btn-lg" onclick="publishIt();">Ja, das passt so!</button>
+      <button class="btn btn-lg" onclick="reset();">Abbrechen</button>
+    </div>
+
+  </div>
+
+  <script type="text/javascript">
+    var image_url;
+
+    function reset() {
+      document.getElementById('progress').innerHTML = '';
+
+      document.getElementById('main').classList.remove('hide');
+      document.getElementById('preview').classList.add('hide');
+    }
+
+    function uploadFile() {
+      var fd = new FormData();
+      var count = document.getElementById('fileToUpload').files.length;
+
+      for (var index = 0; index < count; index++) {
+        var file = document.getElementById('fileToUpload').files[index];
+        fd.append(file.name, file);
+      }
+
+      var xhr = new XMLHttpRequest();
+      xhr.upload.addEventListener('progress', uploadProgress, false);
+      xhr.addEventListener('load', uploadComplete, false);
+      xhr.addEventListener('error', uploadFailed, false);
+      xhr.open('POST', 'upload.php');
+
+      xhr.send(fd);
+    }
+
+    function publishIt() {
+      var fd = new FormData();
+      fd.set("image_url", image_url);
+
+      var xhr = new XMLHttpRequest();
+      xhr.addEventListener('load', reset, false);
+      xhr.addEventListener('error', uploadFailed, false);
+      xhr.open('POST', 'create.php');
+      xhr.send(fd);
+    }
+
+    function uploadProgress(evt) {
+      if (!evt.lengthComputable) {
+        return;
+      }
+
+      var percentComplete = Math.round(evt.loaded * 100 / evt.total);
+      document.getElementById('progress').innerHTML = 'Upload läuft ... ' + percentComplete.toString() + '%';
+    }
+
+    function uploadComplete(evt) {
+      const result = JSON.parse(evt.target.responseText)[0];
+      console.log(result);
+
+      document.getElementById('preview_image').src = result.source_url;
+
+      document.getElementById('main').classList.add('hide');
+      document.getElementById('preview').classList.remove('hide');
+
+      image_url = result.source_url;
+    }
+
+    function uploadFailed(evt) {
+
+      alert('There was an error attempting to upload the file.');
+
+    }
+
+  </script>
+
+
+</body>
+
+</html>
