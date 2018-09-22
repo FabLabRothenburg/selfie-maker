@@ -7,7 +7,7 @@ $outputData = [];
     'type' => 'image/jpeg',
     'tmp_name' => '/tmp/foo.jpg',
     'error' => 0,
-    'size' => 1664391,
+    'size' => filesize('/tmp/foo.jpg'),
 ]];*/
 
 foreach ($_FILES as $file) {
@@ -69,7 +69,12 @@ foreach ($_FILES as $file) {
         die;
     }
 
-    $outputData[] = $mediadata->media_details->sizes->medium_large;
+    if (isset($mediadata->media_details->sizes->medium_large)) {
+        $outputData[] = $mediadata->media_details->sizes->medium_large;
+    } else {
+        $outputData[] = $mediadata->media_details->sizes->full;
+    }
+
     unlink($tmpfile);
 }
 
