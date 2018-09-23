@@ -43,6 +43,10 @@
         <img id="preview_image" alt="Preview Image" />
       </div>
       <div class="form-group">
+        <label for="description">Kurze Beschreibung dazu (optional)</label>
+        <input type="text" class="form-control" id="description" placeholder="Was ist das? Warum ist es cool?">
+      </div>
+      <div class="form-group">
         <button class="btn btn-primary btn-lg" onclick="publishIt();">Ja, das passt so!</button>
         <button class="btn btn-default btn-lg" onclick="reset();">Abbrechen</button>
       </div>
@@ -80,7 +84,8 @@
 
     function publishIt() {
       var fd = new FormData();
-      fd.set("image_url", image_url);
+      fd.set('image_url', image_url);
+      fd.set('description', document.getElementById('description').value);
 
       var xhr = new XMLHttpRequest();
       xhr.addEventListener('load', reset, false);

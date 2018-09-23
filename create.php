@@ -4,9 +4,15 @@ if (empty($_POST['image_url'])) {
     die('image_url missing');
 }
 
+$content = \sprintf('<img src="%s">', $_POST['image_url']);
+
+if (!empty($_POST['description'])) {
+    $content .= \sprintf('<p>%s</p>', htmlspecialchars($_POST['description']));
+}
+
 $data = [
     'title' => \sprintf('Selfie Maker @ %s', date('d.m.Y H:i')),
-    'content' => \sprintf('<img src="%s">', $_POST['image_url']),
+    'content' => $content,
     'status' => 'publish',
 ];
 
