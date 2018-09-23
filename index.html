@@ -97,7 +97,14 @@
     }
 
     function uploadComplete(evt) {
-      const result = JSON.parse(evt.target.responseText)[0];
+      try {
+        var result = JSON.parse(evt.target.responseText)[0];
+      } catch (e) {
+        alert('Server-Antwort konnte nicht verarbeitet werden. Sorry!\n\nServer-Antwort:\n' + evt.target.responseText);
+        reset();
+        return;
+      }
+
       console.log(result);
 
       document.getElementById('preview_image').src = result.source_url;
