@@ -57,7 +57,7 @@
   </div>
 
   <script type="text/javascript">
-    var image_url;
+    var image_id;
 
     function reset() {
       document.getElementById('progress').innerHTML = '';
@@ -86,7 +86,7 @@
 
     function publishIt() {
       var fd = new FormData();
-      fd.set('image_url', image_url);
+      fd.set('image_id', image_id);
       fd.set('description', document.getElementById('description').value);
 
       var xhr = new XMLHttpRequest();
@@ -121,7 +121,7 @@
       document.getElementById('main').classList.add('hide');
       document.getElementById('preview').classList.remove('hide');
 
-      image_url = result.source_url;
+      image_id = result.id;
     }
 
     function uploadFailed(evt) {

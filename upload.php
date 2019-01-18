@@ -57,7 +57,6 @@ foreach ($_FILES as $file) {
     curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
     curl_setopt($curl, CURLOPT_HTTPHEADER, [
         \sprintf('Authorization: Basic %s', base64_encode(getenv('WP_USERPASS'))),
-        #\sprintf('Content-type: %s', $file['type']),
         \sprintf('Content-disposition: attachment; filename="%s"', $file['name'])
     ]);
 
@@ -70,10 +69,12 @@ foreach ($_FILES as $file) {
     }
 
     if (isset($mediadata->media_details->sizes->medium_large)) {
-        $outputData[] = $mediadata->media_details->sizes->medium_large;
+        $medium = $mediadata->media_details->sizes->medium_large;
     } else {
-        $outputData[] = $mediadata->media_details->sizes->full;
+        $medium = $mediadata->media_details->sizes->full;
     }
+
+    $outputData[] = [ 'source_url' => $medium->source_url, 'id' => $mediadata->id ];
 
     unlink($tmpfile);
 }
