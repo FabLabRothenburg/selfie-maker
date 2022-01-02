@@ -1,4 +1,4 @@
-FROM php:7-apache
+FROM php:8-apache
 
 RUN apt-get update && \
  DEBIAN_FRONTEND=noninteractive apt-get -y install imagemagick && \
