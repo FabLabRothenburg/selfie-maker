@@ -18,5 +18,5 @@ jobs:
       - uses: docker/build-push-action@v4
         with:
           pull: true
-          tags: ghcr.io/FabLabRothenburg/selfie-maker:latest
+          tags: ghcr.io/fablabrothenburg/selfie-maker:latest
           push: true
