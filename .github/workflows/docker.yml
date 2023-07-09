@@ -1,0 +1,22 @@
+name: docker
+
+on:
+  push:
+  workflow_dispatch:
+  schedule:
+    - cron: '42 3 * * 5'
+
+jobs:
+  docker:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: docker/login-action@v2
+        with:
+          registry: ghcr.io
+          username: ${{ github.repository_owner }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+      - uses: docker/build-push-action@v4
+        with:
+          pull: true
+          tags: ghcr.io/fablabrothenburg/selfie-maker:latest
+          push: true
