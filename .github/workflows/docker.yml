@@ -15,7 +15,7 @@ jobs:
           registry: ghcr.io
           username: ${{ github.repository_owner }}
           password: ${{ secrets.GITHUB_TOKEN }}
-      - uses: docker/build-push-action@v4
+      - uses: docker/build-push-action@v5
         with:
           pull: true
           tags: ghcr.io/fablabrothenburg/selfie-maker:latest
